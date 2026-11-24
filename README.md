@@ -122,7 +122,17 @@ uv pip install --python .venv/bin/python pytest requests
 
 Тесты работают на мок-транспорте: проверяют тела запросов, роутинг t2v/i2v, маппинг
 aspect → size, клампы длительности и разрешения, состояния задач и чистые `error_response`
-вместо трейсбеков. Реальных платных вызовов нет.
+вместо трейбеков. Реальных платных вызовов нет.
+
+Живая проверка ключа (списывает кредиты плана, запускать интерпретатором Hermes):
+
+```bash
+python scripts/smoke.py --image     # одна картинка, ~30 с
+python scripts/smoke.py --video     # ролик 3 с 480P, ~2 мин
+```
+
+Реальный прогон `wan3.0-video` (480P, 3 с) на этой реализации: задача отработала за 109 с,
+на выходе MP4 h264+aac 854×480, 3.02 с, файл скачан в `$HERMES_HOME/cache/generated/videos/`.
 
 ## Структура
 
@@ -130,7 +140,7 @@ aspect → size, клампы длительности и разрешения, 
 hermes_tpm/          общий слой: ключ, base_url, HTTP, media-URL, конфиг
 image_gen/           провайдер картинок + plugin.yaml
 video_gen/           провайдер видео + plugin.yaml
-scripts/             install.sh / uninstall.sh
+scripts/             install.sh / uninstall.sh / smoke.py
 tests/               pytest (agent.* подменяется заглушками вне Hermes)
 ```
 
