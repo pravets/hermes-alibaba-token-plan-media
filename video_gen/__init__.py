@@ -64,6 +64,7 @@ FAMILIES: dict[str, dict[str, Any]] = {
         "seed": True,
         "image_mode": "first_frame",
         "smart_duration": True,
+        "adaptive_ratio": True,
     },
     "wan3.0-video-prime": {
         "display": "Wan 3.0 Video Prime",
@@ -78,6 +79,7 @@ FAMILIES: dict[str, dict[str, Any]] = {
         "seed": True,
         "image_mode": "first_frame",
         "smart_duration": True,
+        "adaptive_ratio": True,
     },
     "happyhorse-1.1-t2v": {
         "display": "HappyHorse 1.1 (text-to-video)",
@@ -294,6 +296,7 @@ class AlibabaTokenPlanVideoGenProvider(VideoGenProvider):
             return fail(f"{family['display']} needs a source image (`image_url`).", "missing_image")
 
         media: list[dict[str, str]] = []
+        media_type = ""
         if sources:
             # ``image_url`` = the frame to animate; explicit ``reference_image_urls`` are character/style refs.
             media_type = "first_frame" if sources[0] == (image_url or "").strip() else "reference_image"
@@ -311,7 +314,10 @@ class AlibabaTokenPlanVideoGenProvider(VideoGenProvider):
         resolved_resolution = _resolve_resolution(family, resolution)
         if resolved_resolution:
             parameters["resolution"] = resolved_resolution
-        if aspect_ratio and aspect_ratio in family["ratios"]:
+        if media_type == "first_frame" and family.get("adaptive_ratio"):
+            # First-frame jobs follow the still image's shape; a fixed ratio would stretch it.
+            parameters["ratio"] = "adaptive"
+        elif aspect_ratio and aspect_ratio in family["ratios"]:
             parameters["ratio"] = aspect_ratio
         elif family["ratios"] and aspect_ratio in ("", None):
             parameters["ratio"] = "16:9"

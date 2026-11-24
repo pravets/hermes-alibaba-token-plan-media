@@ -120,6 +120,8 @@ def test_image_to_video_sends_first_frame(monkeypatch, provider, tmp_path):
     assert len(media) == 1
     assert media[0]["type"] == "first_frame"
     assert media[0]["url"].startswith("data:image/png;base64,")
+    # a first-frame job follows the still image's aspect instead of stretching to the tool default
+    assert calls[0]["payload"]["parameters"]["ratio"] == "adaptive"
 
 
 def test_reference_images_use_reference_type(monkeypatch, provider):
