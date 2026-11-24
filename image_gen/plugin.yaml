@@ -1,0 +1,7 @@
+name: alibaba-token-plan
+version: 1.0.0
+description: "Alibaba Token Plan image generation backend (Qwen-Image 3.0 Pro, Wan-Image 2.7) — text-to-image and image editing via the native DashScope endpoint."
+author: Iosif Pravets <i@pravets.ru>
+kind: backend
+requires_env:
+  - ALIBABA_TOKEN_PLAN_MEDIA_API_KEY

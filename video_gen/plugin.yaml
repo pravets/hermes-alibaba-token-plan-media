@@ -1,0 +1,7 @@
+name: alibaba-token-plan
+version: 1.0.0
+description: "Alibaba Token Plan video generation backend (Wan 3.0 Video, HappyHorse 1.1) — text-to-video and image-to-video via the async task API."
+author: Iosif Pravets <i@pravets.ru>
+kind: backend
+requires_env:
+  - ALIBABA_TOKEN_PLAN_MEDIA_API_KEY
